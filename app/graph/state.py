@@ -2,5 +2,5 @@ from typing import TypedDict, List
 
 class GraphState(TypedDict):
     question: str
-    documents: List[str]
-    result: str
+    context: List[str]
+    comparison_result: str
