@@ -6,4 +6,4 @@ result = graph.invoke({
     "question": "What are termination conditions?"
 })
 
-print(result["comparison_result"])
+print(result["final_report"])
