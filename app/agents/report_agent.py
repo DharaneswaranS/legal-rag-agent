@@ -9,7 +9,9 @@ llm = ChatGroq(
     api_key=os.getenv("GROQ_API_KEY")
 )
 
-def report_agent(question, risk_text):
+def report_agent(question, risk_text, sources):
+
+    sources_text = "\n".join(sources)
 
     prompt = f"""
     Generate a professional legal analysis report.
@@ -20,11 +22,15 @@ def report_agent(question, risk_text):
     Risk findings:
     {risk_text}
 
+    Sources:
+    {sources_text}
+
     Structure:
     - Executive Summary
     - Key Findings
     - Risk Assessment
     - Recommendation
+    - Sources (mention references)
     """
 
     response = llm.invoke(prompt)

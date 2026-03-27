@@ -7,15 +7,23 @@ from app.agents.report_agent import report_agent
 retriever = load_retriever()
 
 def retrieval_node(state: GraphState):
-    
+
     query = state["question"]
 
     docs = retriever.invoke(query)
 
-    context = [d.page_content for d in docs]
+    context = []
+    sources = []
+
+    for d in docs:
+        context.append(d.page_content)
+
+        source_info = f"{d.metadata.get('source', 'unknown')} (page {d.metadata.get('page', '-')})"
+        sources.append(source_info)
 
     return {
-        "context": context
+        "context": context,
+        "sources": sources
     }
 def comparison_node(state: GraphState):
 
@@ -37,12 +45,12 @@ def risk_node(state: GraphState):
         "risk_analysis": risk
     }
 
-
 def report_node(state: GraphState):
 
     report = report_agent(
         state["question"],
-        state["risk_analysis"]
+        state["risk_analysis"],
+        state["sources"]
     )
 
     return {
