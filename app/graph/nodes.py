@@ -29,7 +29,8 @@ def comparison_node(state: GraphState):
 
     result = compare_agent(
         state["context"],
-        state["question"]
+        state["question"],
+        state.get("chat_history", [])
     )
 
     return {
@@ -53,6 +54,12 @@ def report_node(state: GraphState):
         state["sources"]
     )
 
+    updated_history = state.get("chat_history", []) + [
+        f"Q: {state['question']}",
+        f"A: {report}"
+    ]
+
     return {
-        "final_report": report
+        "final_report": report,
+        "chat_history": updated_history
     }

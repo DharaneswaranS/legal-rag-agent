@@ -7,20 +7,25 @@ llm = ChatGroq(
     api_key=os.getenv("GROQ_API_KEY")
 )
 
-def compare_agent(context, question):
+def compare_agent(context, question, chat_history):
+
+    history = "\n".join(chat_history)
 
     joined = "\n\n".join(context)
 
     prompt = f"""
     You are a legal document analysis assistant.
 
-    Using the following context:
+    Conversation History:
+    {history}
+
+    Context:
     {joined}
 
-    Answer the question:
+    Current Question:
     {question}
 
-    Highlight key clauses and differences.
+    Answer clearly and refer to previous context if needed.
     """
 
     response = llm.invoke(prompt)
